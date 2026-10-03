@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Post</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/managePosts.css">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Gestione Post</h1>
+            <form>
+                <div class="form-group">
+                    <label for="sender">Filtra per Mittente:</label>
+                    <input type="text" id="sender" name="sender" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="date">Filtra per Data:</label>
+                    <input type="date" id="date" name="date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="channelFilter">Filtra per Canale:</label>
+                    <select id="channelFilter" name="channelFilter" class="form-control">
+                        <option value="">Tutti i Canali</option>
+                        <% channels.forEach(channel => { %>
+                            <option value="<%= channel.id %>"><%= channel.nome %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <button type="button" onclick="applyFilter()" class="btn btn-primary">Applica Filtro</button>
+                <a href="/dashboardMod" class="btn btn-secondary">Torna alla Dashboard</a>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Mittente</th>
+                <th>Data</th>
+                <th>Testo</th>
+                <th>Cool</th>
+                <th>Cringe</th>
+                <th>Destinatario</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <% squeal.forEach(post => { %>
+                <tr>
+                    <% if (post.Users) { %>
+                        <td><%= post.Users.username %></td>
+                        <td><%= new Date(post.data) %></td>
+                        <td><%= post.testo %></td>
+                        <td>
+                            <div class="input-group">
+                                <input type="number" id="cool_<%= post.id %>" value="<%= post.cool %>"
+                                       class="form-control">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                            onclick="updateCool('<%= post.id %>')">Aggiorna
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="number" id="cringe_<%= post.id %>" value="<%= post.cringe %>"
+                                       class="form-control">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                            onclick="updateCringe('<%= post.id %>')">Aggiorna
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <% if (post.Squeal_Canale && channels) { %>
+                                <select id="channel_<%= post.id %>" onchange="updateChannel('<%= post.id %>')"
+                                        class="form-control">
+                                    <% channels.forEach(channel => { %>
+                                        <option value="<%= channel.id %>" <%= post.Squeal_Canale.id_canale === channel.id ? 'selected' : '' %>><%= channel.nome %></option>
+                                    <% }); %>
+                                </select>
+                            <% } else { %>
+                                N/A
+                            <% } %>
+                        </td>
+                    <% } %>
+                </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script type= "application/javascript" src="/managePosts.js"></script>
+
+
+    </body>
+</html>

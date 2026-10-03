@@ -1,0 +1,41 @@
+body {
+    background: #d3a2d3;
+    font-family: 'Lato', sans-serif;
+    margin: 0px auto;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 35px;
+}
+
+.card-text {
+    font-style: italic;
+}
+
+.card-user {
+    font-size: 18px;
+}
+
+.card-user span {
+    text-decoration: underline;
+}
+
+.back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #cb3333;
+    color: #fff;
+    height: 40px;
+    width: 120px;
+    border-radius: 5px;
+    margin: 20px auto;
+    text-decoration: none !important;
+}
+
+@media (max-width: 576px) {
+    .card {
+        width: 95%;
+    }
+}

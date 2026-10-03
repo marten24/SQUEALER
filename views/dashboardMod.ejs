@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Mod</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mt-5">Dashboard Mod</h1>
+    <a href="/manageUsers" class="btn btn-primary">Gestione utenti</a>
+    <a href="/managePosts" class="btn btn-primary">Gestione squeal</a>
+    <a href="/manageChannels" class="btn btn-primary">Gestione canali</a>
+    <a href="/managePrivateChannels" class="btn btn-primary">Gestione Canali Privati</a>
+    <button class="btn btn-danger" onclick="logoutModerator()">Esci</button>
+</div>
+
+<script>
+    function logoutModerator() {
+        fetch('/unlockDashboard')
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/';
+                } else {
+                    console.error('Errore durante il logout del moderatore');
+                }
+            })
+            .catch(error => {
+                console.error('Errore durante la chiamata a /unlockDashboard:', error);
+            });
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

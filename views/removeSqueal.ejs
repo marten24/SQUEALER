@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rimuovi Squeal dal Canale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/removeSqueal.css">
+</head>
+
+<body>
+<div class="container mt-5">
+    <h1>Rimuovi Squeal dal Canale</h1>
+    <a href="/managePrivateChannels" class="btn btn-secondary mb-3">Torna Indietro</a>
+    <% if (squeals.length > 0) { %>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Testo</th>
+                <th>Autore</th>
+                <th>Azioni</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% squeals.forEach(squeal => { %>
+                <tr>
+                    <td><%= squeal.id %></td>
+                    <td><%= squeal.testo %></td>
+                    <td><%= squeal.autore %></td>
+                    <td>
+                        <button class="btn btn-danger remove-squeal-btn" data-squeal-id="<%= squeal.id %>" data-channel-id="<%= canaleId %>">Rimuovi</button>
+                    </td>
+                </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <div class="alert alert-info" role="alert">
+            Non ci sono squeals da visualizzare.
+        </div>
+    <% } %>
+</div>
+
+<script type= "application/javascript" src="/removeSqueal.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script></body>
+</html>

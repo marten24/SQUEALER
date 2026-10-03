@@ -1,0 +1,90 @@
+body {
+    background: #d3a2d3;
+    font-family: 'Lato', sans-serif;
+    margin: 0px auto;
+}
+
+.mb-4 {
+    text-align: center;
+}
+
+.home {
+    display: block;
+    margin: 20px auto;
+    background: #cb3333;
+}
+
+.shop {
+    display: block;
+    margin: 20px auto;
+    background: green;
+}
+
+.create-squeal {
+    display: block;
+    margin: 20px auto;
+    background: rgb(51, 51, 203);
+}
+
+.button-container {
+    text-align: center;
+}
+
+.button-container button {
+    margin: 5px;
+}
+
+.active {
+    background-color: #007bff; /* Colore più scuro per il bottone attivo */
+    color: #fff;
+}
+
+.select {
+    display: block;
+    margin: 0px auto;
+    width: 30%;
+}
+
+@media only screen and (max-width: 576px) {
+    .select {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
+.friends-select, .channels {
+    display: block;
+    justify-content: center;
+    margin: 0px auto;
+    width: 30%;
+}
+
+@media only screen and (max-width: 576px) {
+    .friends-select, .channels {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
+.select,
+.caratteri,
+.friends-select,
+.channels,
+.textInput-container,
+.fotoInput-container,
+.videoInput-container,
+.mapInput-container,
+.createButton-container {
+    display: none; /* Inizialmente nascosto */
+}
+
+.caratteri {
+    text-align: center;
+    color: red;
+}
+
+@media (max-width: 576px) {
+    .form-control {
+        width: 95%;
+    }
+}

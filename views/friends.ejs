@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Amici</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/friendsCSS.css">
+
+
+</head>
+<body class="container mt-5">
+<h1 class="mb-4">Lista Amici (clicca per chattare)</h1>
+
+<ul class="list-group" id="friendList">
+    <% for (const friend of friendsUsername) { %>
+        <li class="list-group-item" onclick="apriChat('<%= friend.amico %>')">
+            <img src="https://i.imgur.com/DY6gND0.png" draggable="false"/>
+            <%= `${friend.amico}` %>
+        </li>
+    <% } %>
+</ul>
+
+<% if (friendsUsername.length === 0) { %>
+    <p class="mt-3">Nessun amico trovato.</p>
+<% } %>
+
+<button class="btn btn-primary home-button" onclick="returnHome()">Home</button>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+    function apriChat(amico) {
+        window.location.href = "/chat?amico=" + amico;
+    }
+
+    function returnHome() {
+        window.location.href = "/";
+    }
+</script>
+</body>
+</html>

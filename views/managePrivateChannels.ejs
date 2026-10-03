@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Canali Privati</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/managePrivateChannels.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Gestione Canali Privati</h1>
+    <form id="addChannelForm">
+        <div class="form-group">
+            <label for="channelName">Nome Canale</label>
+            <input type="text" class="form-control" id="channelName" name="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="channelDescription">Descrizione</label>
+            <textarea class="form-control" id="channelDescription" name="descrizione" rows="3" required></textarea>
+        </div>
+        <div class="d-flex">
+            <button type="submit" class="btn btn-primary mr-2">Aggiungi Canale</button>
+            <a href="/dashboardMod" class="btn btn-secondary">Torna alla Dashboard</a>
+        </div>
+    </form>
+    <table class="table mt-4" id="channelsTable">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Azioni</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tbody>
+        <% var canali = canali || []; %>
+        <% canali.forEach(canale => { %>
+            <tr>
+                <td><%= canale.nome %></td>
+                <td><%= canale.descrizione %></td>
+                <td>
+                    <button class="btn btn-danger delete-btn" data-id="<%= canale.id %>">Rimuovi</button>
+                    <a href="/addSquealToChannel/<%= canale.id %>" class="btn btn-info">Aggiungi Squeal</a>
+                    <a href="/removeSquealFromChannel/<%= canale.id %>" class="btn btn-warning">Rimuovi Squeal</a>
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const channelId = this.getAttribute('data-id');
+                if (confirm('Sei sicuro di voler eliminare questo canale?')) {
+                    fetch('/deleteChannel', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id: channelId }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.reload();
+                            } else {
+                                alert('Errore durante l\'eliminazione del canale');
+                            }
+                        })
+                        .catch(error => console.error('Errore:', error));
+                }
+            });
+        });
+    });
+    document.getElementById('addChannelForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const channelName = document.getElementById('channelName').value;
+        const channelDescription = document.getElementById('channelDescription').value;
+
+        fetch('/addChannel', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nome: channelName, descrizione: channelDescription, type: 'PRIVATO' }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert('Errore durante l\'aggiunta del canale');
+                }
+            })
+            .catch(error => console.error('Errore:', error));
+    });
+
+</script>
+</body>
+</html>

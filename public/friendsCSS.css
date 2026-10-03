@@ -1,0 +1,51 @@
+body {
+    background: #d3a2d3;
+    font-family: 'Lato', sans-serif;
+    margin: 0px auto;
+}
+
+.list-group-item {
+    cursor: pointer;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.list-group-item:hover {
+    background-color: rgb(51, 51, 203);
+    color: #fff;
+}
+
+.list-group {
+    align-items: center;
+}
+.mt-3 {
+   text-align: center;
+}
+
+@media only screen and (max-width: 576px) {
+    .list-group-item {
+        width: 80%;
+        align-items: center;
+        margin: 0 auto;
+    }
+}
+
+.mb-4 {
+    text-align: center;
+}
+
+img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-color: #d3a2d3;
+}
+
+.home-button {
+    display: block;
+    margin: 20px auto;
+    background: rgb(51, 51, 203);
+}
+

@@ -1,0 +1,13 @@
+body {
+    background: #d3a2d3;
+    margin-top: 50px;
+}
+
+.btn-primary {
+    background: #3333cb;
+    margin-right: 10px;
+}
+
+.btn-secondary:hover {
+    background: #cb3333;
+}

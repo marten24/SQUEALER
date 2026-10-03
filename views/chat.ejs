@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Amici</title>
+    <link rel="stylesheet" href="/chatCSS.css">
+
+</head>
+<body>
+
+<!-- gestione barra in alto -->
+<div class="menu">
+    <div class="back" onclick="returnBack()"><i class="fa fa-chevron-left"></i> <img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+    <div class="name" id="username"><%= amico %></div>
+</div>
+
+<!-- gestione messaggi in chat -->
+<ol class="chat">
+</ol>
+
+<!-- gestione messaggi in input -->
+<div class="input-bar">
+    <input type="text" id="messageInput" placeholder="Scrivi il messaggio">
+
+    <!-- bottoni per selezinare il tipo di messaggio -->
+    <div>
+        <button id="textButton" onclick="selectMessageType('text')">Messaggio</button>
+        <button id="photoButton" onclick="selectMessageType('photo')">Foto</button>
+        <button id="luogoButton" onclick="selectMessageType('luogo')">Luogo</button>
+    </div>
+
+    <button onclick="sendMessage()">Invia</button>
+</div>
+
+<script type= "application/javascript" src="/chatJS.js"></script>
+<script>
+    //recupero i messaggi provenienti dal server
+    var messages = <%- JSON.stringify(messaggi) %>;
+
+    //messagges è un array? mi serve per il forEach
+    if (Array.isArray(messages)) {
+        //ottengo il riferimento all'elemento "chat"
+        var chatList = document.querySelector('.chat');
+
+        //itero attraverso messages
+        messages.forEach(function (message) {
+            var li = document.createElement('li');
+            li.className = message.isMittente ? 'self' : 'other';
+
+            var divMsg = document.createElement('div');
+            divMsg.className = 'msg';
+
+            //controllo se è un array
+            if (Array.isArray(message.text)) {
+                message.text.forEach(function (testo) {
+                    var p = document.createElement('p');
+                    p.innerHTML = testo;
+                    divMsg.appendChild(p);
+                });
+            } else {
+                //se non è un array
+                var p = document.createElement('p');
+                p.innerHTML = message.text;
+                divMsg.appendChild(p);
+            }
+
+            //gestisce a foto
+            if (message.media) {
+                var img = document.createElement('img');
+                img.src = message.media;
+                img.className = 'media-img';
+                divMsg.appendChild(img);
+            }
+
+            //gestisce la posizione se ha latitudine e longitudine
+            if (message.latitudine && message.longitudine) {
+                var mappa = document.createElement('iframe');
+                mappa.src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyC6VBu7xNbvsU6H21RwCagjvgQ3oWYZYEo&q=' + message.latitudine + ',' + message.longitudine;
+                mappa.width = '300';
+                mappa.height = '200';
+                mappa.frameborder = '0';
+                mappa.style.border = '0';
+                divMsg.appendChild(mappa);
+            }
+
+            //gestisco l'orario
+            var data = document.createElement('data');
+            data.className = 'time';
+            var dataOra = new Date(message.data);
+            var formatoDataOra = dataOra.toLocaleString();
+            data.innerHTML = formatoDataOra;
+
+            //aggiungo gli elementi al DOM
+            li.appendChild(divMsg);
+            divMsg.appendChild(data);
+
+            chatList.appendChild(li);
+        });
+    } else {
+        console.error('La variabile "messages" non è un array.');
+    }
+</script>
+</body>
+</html>

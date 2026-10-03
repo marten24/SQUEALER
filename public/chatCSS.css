@@ -1,0 +1,158 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+
+html, body {
+    background: #d3a2d3;
+    font-family: 'Lato', sans-serif;
+    margin: 0px auto;
+}
+
+.menu {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 50px;
+    background: rgb(51, 51, 203);
+    z-index: 100;
+}
+
+.back {
+    position: absolute;
+    width: 90px;
+    height: 50px;
+    color: #fff;
+    line-height: 50px;
+    font-size: 30px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.back img {
+    position: absolute;
+    top: 5px;
+    left: 30px;
+    width: 40px;
+    height: 40px;
+    background-color: #d3a2d3;
+    border-radius: 100%;
+    margin-left: 15px;
+}
+
+.name{
+    position: absolute;
+    top: 3px;
+    left: 110px;
+    font-size: 30px;
+    color: white;
+}
+
+.chat {
+    padding: 0 0 50px 0;
+    margin-top: 60px;
+    margin-bottom: 10px;
+}
+
+.chat li {
+    padding: 8px;
+    overflow: hidden;
+    display: flex;
+}
+
+.self {
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.msg{
+    background: white;
+    min-width: 50px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.msg p, time {
+    font-size: 13px;
+    margin: 0 0 3px 0;
+    color: #777;
+}
+
+.msg:hover {
+    background-color: rgb(51, 51, 203);
+}
+
+.msg img {
+    position: relative;
+    display: block;
+    width: 450px;
+    border-radius: 5px;
+    cursor: default;
+    height: 300px;
+}
+
+.time {
+    font-size: 10px;
+    color: #d3a2d3;
+}
+
+.input-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fafafa;
+    padding: 10px;
+    display: flex;
+    z-index: 999;
+}
+
+.input-bar input {
+    flex: 1;
+    padding: 8px;
+    margin-right: 1%;
+}
+
+.input-bar button:hover {
+    background-color: #d3a2d3;
+}
+
+.input-bar button {
+    padding: 15px;
+    background: rgb(51, 51, 203);
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+div button.selected {
+    background: #d3a2d3;
+    color: white;
+}
+
+@media (max-width: 576px) {
+    #messageInput {
+        width: 90%;
+    }
+
+    .input-bar {
+        position: static;
+        padding: 5px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .input-bar button {
+        padding: 10px;
+        margin: 5px;
+    }
+
+    .msg {
+        max-width: 300px;
+    }
+
+    .msg img {
+        width: 200px;
+    }
+}

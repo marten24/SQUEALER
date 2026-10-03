@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<title>Canale</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="/channelCSS.css">
+
+<body>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4"><%= channelDetails.nome %></h1>
+            <p class="lead"><%= channelDetails.descrizione %></p>
+            <a  id="tornaHome" href="/" class="btn btn-secondary">Home</a>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <!-- Mostra qui gli squeal -->
+        <% if (Array.isArray(squeals) && squeals.length > 0 ) { %>
+            <% squeals.forEach(squeal => { %>
+                <div class="card mt-3 squeal-card" data-squeal-id="<%= squeal.id %>">
+                    <div class="card-body" >
+                        <button class="btn btn-info btn-reply float-right" <% if (userEmail) { %>onclick="replyToSqueal(<%= squeal.id %>)"
+                        <% } else { %> onclick="alert('Devi effettuare il login.')" <% } %>>Reply</button>
+                        <h6 class="card-title"><%= squeal.Users.username %></h6>
+                        <p id="categoria">Status: <%= squeal.status %></p>
+                        <p class="card-text"><%= squeal.testo %></p>
+
+                        <% if (squeal.media) { %>
+                            <img class="resized-image" src="<%= squeal.media %>" alt="Media">
+                        <% } %>
+
+                        <% function getYoutubeVideoId(url) {
+                            var match = url.match(/[?&]v=([^&]+)/);
+                            return match && match[1] ? match[1] : null;
+                        } %>
+
+                        <% if (squeal.video) { %>
+                            <iframe class="resized-video" src="https://www.youtube.com/embed/<%= getYoutubeVideoId(squeal.video) %>" frameborder="0" allowfullscreen></iframe>
+                        <% } %>
+
+                        <% if (squeal.latitudine && squeal.longitudine) { %>
+                            <iframe class="map"
+                                    src="https://www.google.com/maps/embed/v1/view?key=AIzaSyC6VBu7xNbvsU6H21RwCagjvgQ3oWYZYEo&center=<%= squeal.latitudine %>,<%= squeal.longitudine %>&zoom=13">
+                            </iframe>
+                        <% } %>
+
+                        <button class="btn btn-primary" id="coolBtn<%= squeal.id %>" <% if (userEmail) { %>onclick=addCool(<%= squeal.id %>)
+                        <% } else { %> onclick="alert('Devi effettuare il login.')" <% } %>>Cool <%= squeal.cool %></button>
+                        <button class="btn btn-danger" id="cringeBtn<%= squeal.id %>" <% if (userEmail) { %>onclick=addCringe(<%= squeal.id %>)
+                        <% } else { %> onclick="alert('Devi effettuare il login.')" <% } %>>Cringe <%= squeal.cringe %></button>
+                        <button class="btn btn-info btn-reply" id="replyBtn" onclick=viewReplies(<%= squeal.id %>)>View Replies </button>
+                        <span class="badge badge-secondary" id="views">Views <%= squeal.views %></span>
+                        <p class="card-text"><%= new Date(squeal.data).toLocaleString('en-GB', { timeZone: 'Europe/Rome' }) %></p>
+                    </div>
+
+                </div>
+                <div id="sendreplyPopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close" onclick="closePopup()">&times;</span>
+                        <h6 id="rsqltxt">Reply to Squeal</h6><br>
+                        <div id="squealInfo"></div><br>
+                        <textarea id="replyText" rows="2" cols="40" placeholder="Enter your reply..."></textarea><br>
+                        <button id="sendReplyBtn" class="btn btn-info btn-reply" >Send Reply</button>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="alert alert-info" role="alert">
+                Non ci sono squeals da mostrare.
+            </div>
+        <% } %>
+    </div>
+</div>
+<div id="repliesPopup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closeRepliesPopup()">&times;</span>
+        <h6 style="text-align: left">Replies</h6><br>
+        <div id="popupContent"></div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script type= "application/javascript" src="/indexJS.js"></script>
+</body>
+</html>

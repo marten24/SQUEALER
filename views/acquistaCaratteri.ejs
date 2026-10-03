@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menzioni</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/acquistaCaratteriCSS.css">
+
+</head>
+<body class="container mt-5">
+<% if(!isAbbonatoValue) {%>
+    <h1 class="mb-4">Acquista i tuoi caratteri aggiuntivi a soli $10.99</h1>
+
+    <div class="form-group createButton-container d-flex">
+        <form action="/updateBuyCaratteri" method="post">
+            <button type="submit" class="btn btn-primary view mr-2" onclick="showAlert()">Buy</button>
+        </form>
+        <a href="/createSqueal" class="back">Back</a>
+    </div>
+<% } else { %>
+    <h1 class="mb-4">Al momento risulti già abbonato</h1>
+    <a href="/createSqueal" class="back2">Back</a>
+<% } %>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+    function showAlert() {
+        alert("Caratteri aggiuntivi acquistati con successo!");
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Utenti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/manageUsers.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">Gestione Utenti</h1>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="userType">Seleziona Tipo Utente:</label>
+            <select id="userType" name="userType" class="form-control">
+                <option value="" <%= userTypeFilter === '' ? 'selected' : '' %>>Tutti</option>
+                <option value="NORMALE" <%= userTypeFilter === 'NORMALE' ? 'selected' : '' %>>Normale</option>
+                <option value="VIP" <%= userTypeFilter === 'VIP' ? 'selected' : '' %>>VIP</option>
+                <option value="MOD" <%= userTypeFilter === 'MOD' ? 'selected' : '' %>>Moderatore</option>
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="username">Filtra per Username:</label>
+            <input type="text" id="username" name="username" value="<%= usernameFilter || '' %>" class="form-control">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="popularity">Filtra per Popolarità:</label>
+            <select id="popularity" name="popularity" class="form-control">
+                <option value="" <%= popularityFilter === '' ? 'selected' : '' %>>Tutte</option>
+                <option value="POPOLARE" <%= popularityFilter === 'POPOLARE' ? 'selected' : '' %>>Popolare</option>
+                <option value="NORMALE" <%= popularityFilter === 'NORMALE' ? 'selected' : '' %>>Normale</option>
+                <option value="CONTROVERSO" <%= popularityFilter === 'CONTROVERSO' ? 'selected' : '' %>>Controverso</option>
+                <option value="NON_POPOLARE" <%= popularityFilter === 'NON_POPOLARE' ? 'selected' : '' %>>Non Popolare</option>
+            </select>
+        </div>
+    </div>
+    <button onclick="applyFilter()" class="btn btn-primary">Applica Filtro</button>
+    <a href="/dashboardMod" class="btn btn-secondary">Torna alla Dashboard</a>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Bloccato</th>
+            <th>Caratteri Giornalieri</th>
+            <th>Caratteri Settimanali</th>
+            <th>Caratteri Mensili</th>
+            <th>Popolarità</th>
+            <th>Tipo Utente</th>
+
+        </tr>
+        </thead>
+        <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.username %></td>
+                <td><%= user.email %></td>
+                <td>
+                    <% if (user.bloccato) { %>
+                        <button class="btn btn-success" onclick="toggleUnblock('<%= user.id %>')">Sblocca</button>
+                    <% } else { %>
+                        <button class="btn btn-danger" onclick="toggleBlock('<%= user.id %>', <%= user.bloccato %>)">
+                            <%= user.bloccato ? 'Sblocca' : 'Blocca' %>
+                        </button>
+                    <% } %>
+                </td>
+                <td>
+                    <input type="number" id="dailyChars_<%= user.id %>" value="<%= user.day_ch_l %>" class="form-control"/>
+                    <button class="btn btn-primary" onclick="updateDailyChars('<%= user.id %>')">Aggiorna</button>
+                </td>
+                <td>
+                    <input type="number" id="weeklyChars_<%= user.id %>" value="<%= user.wek_ch_l %>" class="form-control"/>
+                    <button class="btn btn-primary" onclick="updateWeeklyChars('<%= user.id %>')">Aggiorna</button>
+                </td>
+                <td>
+                    <input type="number" id="monthlyChars_<%= user.id %>" value="<%= user.mon_ch_l %>" class="form-control"/>
+                    <button class="btn btn-primary" onclick="updateMonthlyChars('<%= user.id %>')">Aggiorna</button>
+                </td>
+                <td><%= user.popularity %></td>
+                <td><%= user.type %></td>
+            </tr>
+        <% }); %>
+
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script type= "application/javascript" src="/manageUsers.js"></script>
+
+</body>
+</html>

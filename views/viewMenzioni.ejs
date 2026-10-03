@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menzioni</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/viewMenzioniCSS.css">
+
+</head>
+
+<body>
+<h1>Menzioni</h1>
+<div class="container">
+    <ul class="list-group" id="friendList">
+        <% for (const menzione of menzioni) { %>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6 class="card-user"><span><%= menzione.usernameMenzionante %></span> ti ha menzionato nel canale: <%= menzione.nomeCanale %></h6>
+                    <p class="card-text"><%= menzione.menzione %></p>
+                </div>
+            </div>
+        <% } %>
+    </ul>
+    <a href="/menzioni" class="back">Back</a>
+</div>
+</body>
+</html>

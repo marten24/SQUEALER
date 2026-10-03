@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifiche</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/notificheCSS.css">
+
+</head>
+
+<body class="container mt-5">
+<h1 class="mb-4">Notifiche</h1>
+
+<ul class="list-group" id="friendList">
+    <% for (const notificante of notificanti) { %>
+        <li class="list-group-item">
+            <% if (notificante.isPrivate) { %>
+                <p><%= notificante.usernames %> ti ha inviato un nuovo Squeal privato</p>
+            <% } else { %>
+                <p><%= notificante.usernames %> ha postato un nuovo Squeal in <%= notificante.canale %></p>
+            <% } %>
+        </li>
+    <% } %>
+</ul>
+
+<% if (notificanti.length === 0) { %>
+    <p id="nex" class="mt-3">Nessuna notifica trovata.</p>
+<% } %>
+
+<button class="btn btn-primary home-button" onclick="returnHome()">Home</button>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+    function returnHome() {
+        window.location.href = "/";
+    }
+</script>
+</body>
+</html>

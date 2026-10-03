@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/indexCSS.css">
+
+</head>
+<body class="container mt-5">
+
+<div class="row">
+    <div class="sidebar show-sidebar">
+        <% if (userEmail) { %>
+            <a href="/">Home</a>
+            <a class="" href="/createSqueal">Nuovo Squeal</a>
+            <a class="" href="/profile">Dashboard Profilo</a>
+            <% if (isModerator) { %>
+                <a class="" href="/dashboardMod">Dashboard Mod</a>
+            <% } %>
+            <a class="" href="/logout">Logout</a>
+            <a class="" href="/friends">Amici</a>
+            <a class="" href="/menzioni">Menzioni</a>
+            <a class="" href="/notifiche">Notifiche</a>
+            <br>
+            <a class="green">Public Channel</a>
+            <% publicChannels.forEach(channel => { %>
+                <a href="/channel/<%= channel.nome %>">§<%= channel.nome.toUpperCase() %></a>
+            <% }); %>
+            <br>
+            <a class="blue">Private Channel</a>
+            <% privateChannels.forEach(channel => { %>
+                <a href="/channel/<%= channel.nome %>">§<%= channel.nome.toLowerCase() %></a>
+            <% }); %>
+            <br>
+        <% } else { %>
+            <a class="" href="/login">Login</a>
+            <a class="" href="/signup">Signup</a>
+            <br>
+            <a class="green">Public Channel</a>
+            <% publicChannels.forEach(channel => { %>
+                <a href="/channel/<%= channel.nome %>">§<%= channel.nome.toUpperCase() %></a>
+            <% }); %>
+
+            <br>
+        <% } %>
+    </div>
+</div>
+
+<% if (userEmail) { %>
+    <div class="container-fluid bg-info p-5">
+        <h4 id="descrizione" class="text-center text-white">Benvenuto <%= userEmail %></h4>
+    </div>
+<% } else { %>
+    <!-- Utente non loggato-->
+    <div class="container-fluid bg-info p-5">
+        <h4 class="text-center text-white">Squealer, the new Social Media</h4>
+    </div>
+<% } %>
+
+<!-- Contenuto centrale -->
+<div class="col-md-8">
+    <!-- Mostra qui gli squeal -->
+    <% if (Array.isArray(squeals)) { %>
+        <% squeals.forEach(squeal => { %>
+            <div class="card mt-3 squeal-card" data-squeal-id="<%= squeal.id %>">
+                <div class="card-body" >
+                    <button class="btn btn-info btn-reply float-right" <% if (userEmail) { %>onclick="replyToSqueal(<%= squeal.id %>)"
+                    <% } else { %> onclick="alert('Devi effettuare il login.')" <% } %>>Reply</button>
+                    <h6 class="card-title"><%= squeal.username %></h6>
+                    <p id="categoria">Status: <%= squeal.status %></p>
+                    <p class="card-text"><%= squeal.testo %></p>
+
+                    <% if (squeal.media) { %>
+                        <img class="resized-image" src="<%= squeal.media %>" alt="Media">
+                    <% } %>
+
+                    <% function getYoutubeVideoId(url) {
+                        var match = url.match(/[?&]v=([^&]+)/);
+                        return match && match[1] ? match[1] : null;
+                    } %>
+
+                    <% if (squeal.video) { %>
+                        <iframe class="resized-video" src="https://www.youtube.com/embed/<%= getYoutubeVideoId(squeal.video) %>" frameborder="0" allowfullscreen></iframe>
+                    <% } %>
+
+                    <% if (squeal.latitudine && squeal.longitudine) { %>
+                        <iframe class="map"
+                                src="https://www.google.com/maps/embed/v1/view?key=AIzaSyC6VBu7xNbvsU6H21RwCagjvgQ3oWYZYEo&center=<%= squeal.latitudine %>,<%= squeal.longitudine %>&zoom=13">
+                        </iframe>
+                    <% } %>
+
+                    <button class="btn btn-primary" id="coolBtn<%= squeal.id %>" <% if (userEmail) { %>onclick=addCool(<%= squeal.id %>)
+                    <% } else { %> onclick="alert('Devi effettuare il login.')" <% } %>>Cool <%= squeal.cool %></button>
+                    <button class="btn btn-danger" id="cringeBtn<%= squeal.id %>" <% if (userEmail) { %>onclick=addCringe(<%= squeal.id %>)
+                    <% } else { %> onclick="alert('Devi effettuare il login.')" <% } %>>Cringe <%= squeal.cringe %></button>
+                    <button class="btn btn-info btn-reply" id="replyBtn" onclick=viewReplies(<%= squeal.id %>)>View Replies </button>
+                    <span class="badge badge-secondary" id="views">Views <%= squeal.views %></span>
+                    <p class="card-text"><%= new Date(squeal.data).toLocaleString('en-GB', { timeZone: 'UTC' }) %></p>
+                </div>
+            </div>
+            <div id="sendreplyPopup" class="popup">
+                <div class="popup-content">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                    <h6 id="rsqltxt">Reply to Squeal</h6><br>
+                    <div id="squealInfo"></div><br>
+                    <textarea id="replyText" rows="2" cols="40" placeholder="Enter your reply..."></textarea><br>
+                    <button id="sendReplyBtn" class="btn btn-info btn-reply" >Send Reply</button>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <!-- Handle the case when squeals is not an array -->
+        <p>No squeals available.</p>
+    <% } %>
+</div>
+<div id="repliesPopup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closeRepliesPopup()">&times;</span>
+        <h6 style="text-align: left">Replies</h6><br>
+        <div id="popupContent"></div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script type= "application/javascript" src="/indexJS.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Canali</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/manageChannels.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Gestione Canali</h1>
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Visibile</th>
+            <th>Azioni</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <% channels.forEach(channel => { %>
+            <tr>
+                <td><%= channel.id %></td>
+                <td><%= channel.nome %></td>
+                <td>
+                    <input type="text" class="form-control" id="desc_<%= channel.id %>" value="<%= channel.descrizione %>">
+                </td>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="visible_<%= channel.id %>" <%= channel.visibile ? 'checked' : '' %> onchange="updateVisibility('<%= channel.id %>', this.checked)">
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-primary" onclick="updateDescription('<%= channel.id %>')">Salva</button>
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <a href="/dashboardMod" class="btn btn-secondary">Torna alla Dashboard</a>
+</div>
+
+<script>
+    async function updateVisibility(channelId, newValue) {
+        const response = await fetch(`/updateChannelVisibility?id=${channelId}&visible=${newValue}`, {
+            method: 'POST',
+        });
+
+        if (!response.ok) {
+            console.error('Errore durante la richiesta al server');
+        }
+    }
+    async function updateDescription(channelId) {
+        const newDescription = document.getElementById(`desc_${channelId}`).value;
+        const response = await fetch(`/updateChannelDescription?id=${channelId}&descrizione=${encodeURIComponent(newDescription)}`, {
+            method: 'POST',
+        });
+
+        if (!response.ok) {
+            console.error('Errore durante la richiesta al server');
+        }
+        //ricarica la pagina
+        location.reload();
+    }
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
